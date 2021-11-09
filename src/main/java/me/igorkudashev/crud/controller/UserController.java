@@ -36,7 +36,8 @@ public class UserController {
     @DeleteMapping("/{id}")
     public String deleteUser(@PathVariable("id") int id) {
         userService.deleteById(id);
-        return "users";
+        System.out.println("DELETE");
+        return "redirect:/users";
     }
 
     @GetMapping("/{id}/edit")
@@ -61,6 +62,7 @@ public class UserController {
     @GetMapping("/{id}")
     public String getUser(Model model, @PathVariable("id") int id) {
         model.addAttribute("user", userService.findById(id));
+        System.out.println("SHOW");
         return "user";
     }
 }

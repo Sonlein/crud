@@ -43,6 +43,6 @@ public class UserServiceImp implements UserService {
 
     @PostConstruct
     public void fillDataBase() {
-        userRepository.save(new User("Igor", "Kudashev", 180));
+        userRepository.save(new User("Igor", "Kudashev", 187));
     }
 }
