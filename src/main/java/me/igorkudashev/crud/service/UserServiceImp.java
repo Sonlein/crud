@@ -2,10 +2,8 @@ package me.igorkudashev.crud.service;
 
 import me.igorkudashev.crud.dao.UserDao;
 import me.igorkudashev.crud.model.User;
-import me.igorkudashev.crud.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
