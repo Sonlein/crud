@@ -1,9 +1,11 @@
 package me.igorkudashev.crud.service;
 
+import me.igorkudashev.crud.dao.UserDao;
 import me.igorkudashev.crud.model.User;
 import me.igorkudashev.crud.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -14,35 +16,35 @@ import java.util.List;
 @Service
 public class UserServiceImp implements UserService {
 
-    private final UserRepository userRepository;
+    private final UserDao userDao;
 
     @Autowired
-    public UserServiceImp(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserServiceImp(UserDao userDao) {
+        this.userDao = userDao;
     }
 
     @Override
     public void add(User user) {
-        userRepository.save(user);
+        userDao.add(user);
     }
 
     @Override
     public User findById(int id) {
-        return userRepository.findById(id).orElse(null);
+        return userDao.findById(id);
     }
 
     @Override
     public List<User> findAll() {
-        return userRepository.findAll();
+        return userDao.findAll();
     }
 
     @Override
     public void deleteById(int id) {
-        userRepository.deleteById(id);
+        userDao.deleteById(id);
     }
 
     @PostConstruct
     public void fillDataBase() {
-        userRepository.save(new User("Igor", "Kudashev", 187));
+        userDao.add(new User("Igor", "Kudashev", 187));
     }
 }
