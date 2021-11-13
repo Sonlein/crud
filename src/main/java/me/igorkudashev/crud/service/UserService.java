@@ -1,6 +1,7 @@
 package me.igorkudashev.crud.service;
 
 import me.igorkudashev.crud.model.User;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -11,10 +12,14 @@ public interface UserService {
 
     void add(User user);
 
-    User findById(int id);
+    User findById(Long id);
 
     List<User> findAll();
 
-    void deleteById(int id);
+    void deleteById(Long id);
+
+    User getByName(String name);
+
+    User getUserByAuth(Authentication authentication);
 
 }

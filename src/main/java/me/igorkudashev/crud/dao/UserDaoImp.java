@@ -5,11 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
+import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author RulleR
@@ -18,8 +21,15 @@ import java.util.List;
 @Repository
 public class UserDaoImp implements UserDao {
 
-    @PersistenceContext
+    @PersistenceContext(type = PersistenceContextType.EXTENDED)
     private EntityManager entityManager;
+
+    private final RoleDao roleDao;
+
+    @Autowired
+    public UserDaoImp(RoleDao roleDao) {
+        this.roleDao = roleDao;
+    }
 
     @Override
     public void add(User user) {
@@ -27,7 +37,7 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public User findById(int id) {
+    public User findById(Long id) {
         return entityManager.find(User.class, id);
     }
 
@@ -37,7 +47,22 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(Long id) {
         entityManager.remove(findById(id));
+    }
+
+    @Override
+    public User getByName(String name) {
+        return entityManager.createQuery("select a from User a where a.name = :name", User.class)
+                .setParameter("name", name)
+                .getSingleResult();
+    }
+
+    @PostConstruct
+    public void fillDataBase() {
+        add(new User("Igor", "pass",
+                Set.of(roleDao.findByName("ROLE_ADMIN"))));
+        add(new User("Denis", "pass",
+                Set.of(roleDao.findByName("ROLE_USER"))));
     }
 }
