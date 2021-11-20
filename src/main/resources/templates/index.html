@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+</head>
+<body>
+<a>Welcome to the Home page</a>
+<br>
+<a th:if="${user} == null" th:href="@{/login}" th:text="|Login|"></a>
+<a th:if="${user} != null" th:href="@{/user}" th:text="|My Profile|"></a>
+<div th:if="${user} != null">
+    <a th:href="@{/logout}" th:text="|Logout|"></a>
+</div>
+</body>
+</html>

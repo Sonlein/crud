@@ -6,17 +6,18 @@
     <title>Create user</title>
 </head>
 <body>
-    <form th:method="post" th:action="@{/users/new}" th:object="${user}">
+    <form th:method="post" th:action="@{/admin/users/new}" th:object="${user}">
         <label for="name">Name</label>
         <input type="text" th:field="*{name}" id="name"/>
         <br><br>
-        <label for="lastName">Last name</label>
-        <input type="text" th:field="*{lastName}" id="lastName"/>
-        <br><br>
-        <label for="height">Height</label>
-        <input type="number" th:field="*{height}" id="height"/>
+        <label for="password">Password</label>
+        <input type="password" th:field="*{password}" id="password"/>
         <br><br>
         <input type="submit" value="Submit"/>
     </form>
+    <br>
+    <a th:href="@{/}" th:text="|Home page|"></a>
+    <br>
+    <a th:href="@{/logout}" th:text="|Logout|"></a>
 </body>
 </html>
