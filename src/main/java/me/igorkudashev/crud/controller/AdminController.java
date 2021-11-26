@@ -1,5 +1,6 @@
 package me.igorkudashev.crud.controller;
 
+import me.igorkudashev.crud.model.Role;
 import me.igorkudashev.crud.model.User;
 import me.igorkudashev.crud.service.RoleService;
 import me.igorkudashev.crud.service.UserService;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -33,51 +36,62 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/users/new")
-    public String createUserForm(Model model) {
-        model.addAttribute("user", new User());
-        return "admin/new";
-    }
-
-    @PostMapping("/users/new")
-    public String createUser(@ModelAttribute("user") User user) {
-        user.setRoles(Set.of(roleService.findByName("ROLE_USER")));
+    @PostMapping("/users")
+    public String createUser(@ModelAttribute("user") User user,
+                             @RequestParam(value = "rolesId", defaultValue = "2") List<Long> rolesId) {
+        rolesId.forEach(id -> {
+            Role role = roleService.findById(id);
+            if (role != null) {
+                user.addRole(role);
+            }
+        });
         userService.add(user);
         return "redirect:/admin";
     }
 
-    @DeleteMapping("/users/{id}")
-    public String deleteUser(@PathVariable("id") Long id) {
+    @DeleteMapping("/users")
+    public String deleteUser(@RequestParam(value = "deleteId") Long id) {
         userService.deleteById(id);
         return "redirect:/admin";
     }
 
-    @GetMapping("/users/{id}/edit")
-    public String editUserForm(Model model, @PathVariable("id") Long id) {
-        User user = userService.findById(id);
-        model.addAttribute("user", user);
-        return "admin/edit";
-    }
-
-    @PatchMapping("/users/{id}")
-    public String editUser(@ModelAttribute("user") User user) {
-        userService.add(user);
+    @PatchMapping("/users")
+    public String editUser(User user,
+                           @RequestParam(value = "rolesId", defaultValue = "2") List<Long> rolesId) {
+        rolesId.forEach(id -> {
+            Role role = roleService.findById(id);
+            if (role != null) {
+                user.addRole(role);
+            }
+        });
+//        userService.deleteById(user.getId());
+        userService.update(user);
         return "redirect:/admin";
     }
 
     @GetMapping("")
     public String getAllUsers(Model model) {
+        if (model.getAttribute("loggedUser") == null) {
+            return "index";
+        }
         model.addAttribute("users", userService.findAll());
+        model.addAttribute("newUser", new User());
         return "admin/admin";
     }
 
     @GetMapping("/users/{id}")
-    public String getUser(Authentication authentication, Model model, @PathVariable("id") Long id) {
-        User user = userService.getUserByAuth(authentication);
-        model.addAttribute("user", userService.findById(id));
-        if (user.getId().equals(id)) {
-            return "profile";
-        }
-        return "admin/user";
+    @ResponseBody
+    public User getUser(@PathVariable("id") Long id) {
+        return userService.findById(id);
+    }
+
+    @GetMapping("/user")
+    public String getProfile() {
+        return "profile";
+    }
+
+    @ModelAttribute
+    public void addAttributes(Authentication authentication, Model model) {
+        model.addAttribute("loggedUser", userService.getUserByAuth(authentication));
     }
 }

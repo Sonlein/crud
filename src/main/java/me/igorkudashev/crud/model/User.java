@@ -4,8 +4,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 // Для того, чтобы в дальнейшим использовать класс User в Spring Security, он должен реализовывать интерфейс UserDetails.
 // UserDetails можно представить, как адаптер между БД пользователей и тем что требуется Spring Security внутри SecurityContextHolder
@@ -23,7 +27,7 @@ public class User implements UserDetails {
 
     private String password;
 
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -34,10 +38,10 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String name, String password, Set<Role> roles) {
+    public User(String name, String password, Role ... roles) {
         this.name = name;
         this.password = password;
-        this.roles = roles;
+        this.roles = Stream.of(roles).collect(Collectors.toSet());
     }
 
     public Long getId() {
@@ -98,6 +102,13 @@ public class User implements UserDetails {
 
     public Set<Role> getRoles() {
         return roles;
+    }
+
+    public void addRole(Role role) {
+        if (roles == null) {
+            roles = new HashSet<>();
+        }
+        roles.add(role);
     }
 
     public void setRoles(Set<Role> roles) {

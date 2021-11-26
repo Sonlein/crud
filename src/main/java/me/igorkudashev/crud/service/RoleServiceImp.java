@@ -4,6 +4,7 @@ import me.igorkudashev.crud.dao.RoleDao;
 import me.igorkudashev.crud.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -11,7 +12,8 @@ import java.util.List;
 /**
  * @author RulleR
  */
-@Service
+@Transactional
+@Service(value = "roleService")
 public class RoleServiceImp implements RoleService {
 
     private final RoleDao roleDao;

@@ -2,10 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta th:insert="~{fragments/frag1 :: bootstrapcss}" charset="utf-8">
     <title>Edit user</title>
 </head>
 <body>
+    <div th:insert="~{fragments/frag1 :: navbar}"></div>
     <form th:method="patch" th:action="@{/admin/users/{id}(id=${user.id})}" th:object="${user}">
         <label for="id">ID</label>
         <input type="number" readonly th:field="*{id}" id="id"/>
@@ -21,9 +22,6 @@
         <br><br>
         <input type="submit" value="Edit!"/>
     </form>
-    <br>
-    <a th:href="@{/}" th:text="|Home page|"></a>
-    <br>
-    <a th:href="@{/logout}" th:text="|Logout|"></a>
+    <div th:insert="~{fragments/frag1 :: bootstrapjs}"></div>
 </body>
 </html>

@@ -2,10 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta th:insert="~{fragments/frag1 :: bootstrapcss}" charset="utf-8">
     <title>Create user</title>
 </head>
 <body>
+<div th:insert="~{fragments/frag1 :: navbar}"></div>
     <form th:method="post" th:action="@{/admin/users/new}" th:object="${user}">
         <label for="name">Name</label>
         <input type="text" th:field="*{name}" id="name"/>
@@ -15,9 +16,6 @@
         <br><br>
         <input type="submit" value="Submit"/>
     </form>
-    <br>
-    <a th:href="@{/}" th:text="|Home page|"></a>
-    <br>
-    <a th:href="@{/logout}" th:text="|Logout|"></a>
+    <div th:insert="~{fragments/frag1 :: bootstrapjs}"></div>
 </body>
 </html>

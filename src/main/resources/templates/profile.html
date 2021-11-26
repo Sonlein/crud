@@ -1,19 +1,48 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta th:insert="~{fragments/frag1 :: bootstrapcss}" charset="utf-8">
     <title>Your profile</title>
 </head>
 <body>
-    <a>-- Your profile --</a>
-    <p th:text="|ID : ${user.id}|"></p>
-    <p th:text="|Name : ${user.name}|"></p>
-    <p th:text="|Password : ${user.password}|"></p>
-    <p th:text="|Roles : ${user.roles}|"></p>
-    <br>
-    <a th:href="@{/}" th:text="|Home page|"></a>
-    <br>
-    <a th:href="@{/logout}" th:text="|Logout|"></a>
+    <div th:insert="~{fragments/frag1 :: navbar}"></div>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link" href="/admin" sec:authorize="hasRole('ADMIN')">Admin</a>
+                <a class="nav-link active" href="/user">User</a>
+            </div>
+        </div>
+        <div class="col-sm">
+            <h1>User information</h1>
+            <h4>About user</h4>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Password</th>
+                    <th scope="col">Roles</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row" th:text="${loggedUser.id}"></th>
+                    <td th:text="${loggedUser.name}"></td>
+                    <td th:text="${loggedUser.password}"></td>
+                    <td>
+                        <a th:each="role : ${loggedUser.roles}" th:text="|${role.role} |"></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+<!--            <p th:text="|ID : ${loggedUser.id}|"></p>-->
+<!--            <p th:text="|Name : ${loggedUser.name}|"></p>-->
+<!--            <p th:text="|Password : ${loggedUser.password}|"></p>-->
+<!--            <p th:text="|Roles : ${loggedUser.roles}|"></p>-->
+        </div>
+    </div>
+    <div th:insert="~{fragments/frag1 :: bootstrapjs}"></div>
 </body>
 </html>

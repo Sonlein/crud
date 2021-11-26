@@ -12,6 +12,8 @@ public interface UserService {
 
     void add(User user);
 
+    void update(User user);
+
     User findById(Long id);
 
     List<User> findAll();

@@ -4,16 +4,13 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta th:insert="~{fragments/frag1 :: bootstrapcss}" charset="utf-8">
     <title>Home page</title>
 </head>
 <body>
-<a>Welcome to the Home page</a>
+<div th:insert="~{fragments/frag1 :: navbar}"></div>
 <br>
-<a th:if="${user} == null" th:href="@{/login}" th:text="|Login|"></a>
-<a th:if="${user} != null" th:href="@{/user}" th:text="|My Profile|"></a>
-<div th:if="${user} != null">
-    <a th:href="@{/logout}" th:text="|Logout|"></a>
-</div>
+<h1>Welcome to the Home page</h1>
+<div th:insert="~{fragments/frag1 :: bootstrapjs}"></div>
 </body>
 </html>

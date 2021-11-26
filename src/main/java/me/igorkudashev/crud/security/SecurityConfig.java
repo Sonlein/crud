@@ -50,11 +50,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public static PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }
-
-    @Bean
-    public FilterRegistrationBean<HiddenHttpMethodFilter> hiddenHttpMethodFilter() {
-        FilterRegistrationBean<HiddenHttpMethodFilter> filterRegistrationBean = new FilterRegistrationBean<>(new HiddenHttpMethodFilter());
-        filterRegistrationBean.setUrlPatterns(List.of("/*"));
-        return filterRegistrationBean;
-    }
 }

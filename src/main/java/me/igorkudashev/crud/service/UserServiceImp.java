@@ -4,17 +4,21 @@ import me.igorkudashev.crud.dao.UserDao;
 import me.igorkudashev.crud.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 /**
  * @author RulleR
  */
-@Service
+@Transactional
+@Service(value = "userService")
 public class UserServiceImp implements UserService {
 
     private final UserDao userDao;
@@ -30,8 +34,20 @@ public class UserServiceImp implements UserService {
 
     @Override
     public void add(User user) {
-        user.setPassword(encoder.encode(user.getPassword()));
+        if (user.getId() != null) {
+            User savedUser = userDao.findById(user.getId());
+            if (savedUser != null && user.getPassword().equals(savedUser.getPassword())) {
+                user.setPassword(encoder.encode(user.getPassword()));
+            }
+        } else {
+            user.setPassword(encoder.encode(user.getPassword()));
+        }
         userDao.add(user);
+    }
+
+    @Override
+    public void update(User user) {
+        userDao.update(user);
     }
 
     @Override
@@ -58,15 +74,16 @@ public class UserServiceImp implements UserService {
     public User getUserByAuth(Authentication authentication) {
         return authentication == null
                 ? null
-                : getByName(authentication.getName());
+                : findById(((User) authentication.getPrincipal()).getId());
     }
 
     @PostConstruct
     public void fillDataBase() {
         findAll().forEach(user -> deleteById(user.getId()));
         add(new User("Igor", "pass",
-                Set.of(roleService.findByName("ROLE_ADMIN"))));
+                roleService.findByName("ROLE_ADMIN")));
         add(new User("Denis", "pass",
-                Set.of(roleService.findByName("ROLE_USER"))));
+                roleService.findByName("ROLE_USER")));
+
     }
 }

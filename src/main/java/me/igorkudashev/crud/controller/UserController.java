@@ -6,6 +6,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author RulleR
@@ -21,8 +25,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/")
-    public String getHomePage(Authentication authentication, Model model) {
-        model.addAttribute("user", userService.getUserByAuth(authentication));
+    public String getHomePage() {
         return "index";
     }
 
@@ -32,9 +35,12 @@ public class UserController {
     }
 
     @GetMapping(value = "/user")
-    public String getUserPage(Authentication authentication, Model model) {
-        model.addAttribute("user", userService.getUserByAuth(authentication));
+    public String getUserPage() {
         return "profile";
     }
 
+    @ModelAttribute
+    public void addAttributes(Authentication authentication, Model model) {
+        model.addAttribute("loggedUser", userService.getUserByAuth(authentication));
+    }
 }
