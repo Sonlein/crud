@@ -64,7 +64,6 @@ public class AdminController {
                 user.addRole(role);
             }
         });
-//        userService.deleteById(user.getId());
         userService.update(user);
         return "redirect:/admin";
     }
