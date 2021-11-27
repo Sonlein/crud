@@ -12,13 +12,13 @@ public interface UserService {
 
     void add(User user);
 
-    void update(User user);
+    boolean update(Long id, User user);
 
     User findById(Long id);
 
     List<User> findAll();
 
-    void deleteById(Long id);
+    boolean deleteById(Long id);
 
     User getByName(String name);
 

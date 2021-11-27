@@ -46,8 +46,13 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void update(User user) {
-        userDao.update(user);
+    public boolean update(Long id, User user) {
+        if (userDao.findById(id) != null) {
+            user.setId(id);
+            userDao.update(user);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -61,8 +66,12 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void deleteById(Long id) {
-        userDao.deleteById(id);
+    public boolean deleteById(Long id) {
+        if (userDao.findById(id) != null) {
+            userDao.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     @Override

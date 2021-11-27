@@ -33,7 +33,7 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
     public User() {
     }
@@ -105,9 +105,6 @@ public class User implements UserDetails {
     }
 
     public void addRole(Role role) {
-        if (roles == null) {
-            roles = new HashSet<>();
-        }
         roles.add(role);
     }
 

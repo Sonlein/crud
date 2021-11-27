@@ -27,12 +27,9 @@
                       <li class="nav-item px-3">
                           <a class="btn btn-light" th:href="@{/}">Home page</a>
                       </li>
-                      <li class="nav-item nav-link active px-3" th:if="${loggedUser} != null">
-                          <b><a th:text="|${loggedUser.name} |"></a></b>
-                          <a>with roles: </a>
-                          <a th:each="role : ${loggedUser.roles}">
-                              <a th:text="|${role.role} |"></a>
-                          </a>
+                      <li class="nav-item nav-link active px-3">
+                          <b><a id="userName"></a></b>
+                          <a id="userRoles"></a>
                       </li>
                   </ul>
               </div>

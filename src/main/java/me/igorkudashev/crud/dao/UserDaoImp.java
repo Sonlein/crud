@@ -12,6 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author RulleR
@@ -48,7 +49,8 @@ public class UserDaoImp implements UserDao {
 
     @Override
     public List<User> findAll() {
-        return entityManager.createQuery("select a from User a", User.class).getResultList();
+        return entityManager.createQuery("select user from User user", User.class)
+                .getResultList();
     }
 
     @Override
@@ -58,7 +60,7 @@ public class UserDaoImp implements UserDao {
 
     @Override
     public User getByName(String name) {
-        return entityManager.createQuery("select a from User a where a.name = :name", User.class)
+        return entityManager.createQuery("select user from User user where user.name = :name", User.class)
                 .setParameter("name", name)
                 .getSingleResult();
     }

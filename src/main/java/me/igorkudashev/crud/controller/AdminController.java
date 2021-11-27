@@ -64,14 +64,14 @@ public class AdminController {
                 user.addRole(role);
             }
         });
-        userService.update(user);
+        userService.update(user.getId(), user);
         return "redirect:/admin";
     }
 
     @GetMapping("")
     public String getAllUsers(Model model) {
         if (model.getAttribute("loggedUser") == null) {
-            return "index";
+            return "redirect:/";
         }
         model.addAttribute("users", userService.findAll());
         model.addAttribute("newUser", new User());
