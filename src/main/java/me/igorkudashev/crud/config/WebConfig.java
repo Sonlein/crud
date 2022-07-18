@@ -33,7 +33,7 @@ import java.util.Properties;
 @EnableWebMvc
 @ComponentScan(value = "me.igorkudashev.crud")
 @EnableJpaRepositories(value = "me.igorkudashev.crud")
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:application.yml")
 @EnableTransactionManagement
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebConfig implements WebMvcConfigurer {
